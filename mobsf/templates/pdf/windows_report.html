@@ -34,6 +34,9 @@
   {% endif %}
   <link rel="stylesheet" href="{{base_url}}{% static "others/css/pdf_report.css" %}">
   <link rel="stylesheet" href="{{base_url}}{% static "adminlte/plugins/fontawesome-free/css/all.min.css" %}">
+
+  <!-- Include Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
 
   <body bgcolor="FFFFFF">
@@ -47,7 +50,7 @@
       <img class="center" id="icon" src="{{base_url}}{% static 'img/no_icon.png' %}" alt="app_icon"/>
      </div>
       <div class="center">
-        <h1><i class="fab fa-apple"></i> {{ app_name }} {% if app_version %} ({{app_version}}) {% endif %}</h1>
+        <h1><i class="fab fa-windows"></i> {{ app_name }} {% if app_version %} ({{app_version}}) {% endif %}</h1>
       </div>
      </br></br></br></br></br>
       <div class="container">
@@ -73,7 +76,6 @@
       </tr>
     </table>
       </div>
-      </br></br>
       </br></br>
       </br></br>
       </br></br>
@@ -232,7 +234,7 @@
           Mobile Security Framework (MobSF) is an automated, all-in-one mobile application (Android/iOS/Windows) pen-testing, malware analysis and security assessment framework capable of performing static and dynamic analysis.
         </p>
         <p>
-        <strong>© {% now "Y" %} Mobile Security Framework - MobSF | <a href="https://ajinabraham.com">Ajin Abraham</a> | <a href="https://opensecurity.in">OpenSecurity</a>.</strong>
+        <strong>© {% now "Y" %} Mobile Security Framework - MobSF | <a href="https://amishanadhira.com">Amisha Nadhira</a> | <a href="https://SPeTMA.my">SPeTMA</a>.</strong>
       </p>
       </section>
     </article>
