@@ -33,6 +33,9 @@
   {% endif %}
   <link rel="stylesheet" href="{{base_url}}{% static "others/css/pdf_report.css" %}">
   <link rel="stylesheet" href="{{base_url}}{% static "adminlte/plugins/fontawesome-free/css/all.min.css" %}">
+
+  <!-- Chart.js for Graph Rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
 
   <body bgcolor="FFFFFF">
@@ -141,24 +144,44 @@
 </br></br>
 </br></br>
 </br></br>
+    <!-- Findings Severity Bar Chart Section -->
     <h2><i class="fas fa-chart-pie mr-1"></i> FINDINGS SEVERITY</h2>
-    <table class="basic tbl-white">
-      <tr>
-        <th class="td-high"><i class="fas fa-bug"> </i> HIGH</th>
-        <th class="td-warning"><i class="fas fa-exclamation-triangle"> </i> MEDIUM</th>
-        <th class="td-info"><i class="fas fa-info"> </i> INFO</th>
-        <th class="td-success"><i class="fas fa-check"></i> SECURE</th>
-        <th class="td-secondary"><i class="fab fa-searchengin"></i> HOTSPOT</th>
-      </tr>
-      <tr>
-        <td class="td-high"><h2>{{ appsec.high | length}}</h2></td>
-        <td class="td-warning"><h2>{{ appsec.warning | length}}</h2></td>
-        <td class="td-info"><h2>{{ appsec.info | length}}</h2></td>
-        <td class="td-success"><h2>{{ appsec.secure | length}}</h2></td>
-        <td class="td-secondary"><h2>{{ appsec.hotspot | length}}</h2></td>
-      </tr>
-    </table>
-      </div>
+
+    <!-- Create a canvas for the chart -->
+    <canvas id="severityChart" width="400" height="200"></canvas>
+
+    <script>
+      var ctx = document.getElementById('severityChart').getContext('2d');
+      var severityChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['HIGH', 'MEDIUM', 'INFO', 'SECURE', 'HOTSPOT'], // Severity levels
+          datasets: [{
+            label: 'Number of Findings',
+            data: [
+              {{ appsec.high | length }},
+              {{ appsec.warning | length }},
+              {{ appsec.info | length }},
+              {{ appsec.secure | length }},
+              {{ appsec.hotspot | length }}
+            ], // Data for each severity level
+            backgroundColor: ['#ff5733', '#ffc107', '#17a2b8', '#28a745', '#6c757d'], // Color for each bar
+            borderColor: ['#ff5733', '#ffc107', '#17a2b8', '#28a745', '#6c757d'],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          },
+          responsive: true,
+          maintainAspectRatio: false
+        }
+      });
+    </script>
+    </div>
       
     </article>
   {% endif %}
@@ -720,7 +743,6 @@
             </tbody>
           </table>
     {% endif %}
-
     {% if behaviour %}
     <h2><i class="fas fa-sitemap"></i> BEHAVIOUR ANALYSIS</h2>
     <table class="basic">
@@ -1103,7 +1125,7 @@
           Mobile Security Framework (MobSF) is an automated, all-in-one mobile application (Android/iOS/Windows) pen-testing, malware analysis and security assessment framework capable of performing static and dynamic analysis.
         </p>
         <p>
-        <strong>© {% now "Y" %} Mobile Security Framework - MobSF | <a href="https://ajinabraham.com">Ajin Abraham</a> | <a href="https://opensecurity.in">OpenSecurity</a>.</strong>
+        <strong>© {% now "Y" %} Mobile Security Framework - MobSF | <a href="https://amishanadhira.com">Amisha Nadhira</a> | <a href="https://SPeTMA.my">SPeTMA</a>.</strong>
       </p>
       </section>
     </article>
