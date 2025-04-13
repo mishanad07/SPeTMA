@@ -10,16 +10,18 @@ services:
       - POSTGRES_PASSWORD_FILE=/run/secrets/mobsfDB_password
       - POSTGRES_DB=mobsf
     networks:
-        - mobsf_network
+      - mobsf_network
     secrets:
       - mobsfDB_password
 
   mobsf:
-    image: ${MOBSF_IMAGE:-opensecurity/mobile-security-framework-mobsf:latest}
+    build:
+      context: https://github.com/mishanad07/SPeTMA.git  # Your GitHub repository URL
+      dockerfile: Dockerfile
     restart: always
     ports:
-     - "8000:8000"
-     - "1337:1337"
+      - "8000:8000"
+      - "1337:1337"
     volumes:
       - $HOME/MobSF/mobsf_data:/home/mobsf/.MobSF
     environment:
@@ -41,8 +43,47 @@ services:
       - mobsfDB_password
       - mobsf_api_key
 
+  nginx:
+    image: nginx:latest
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 256M
+    ports:
+      - "80:4000"
+      - "1337:4001"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - mobsf
+    networks:
+      - mobsf_network
+
+  djangoq:
+    build:
+      context: https://github.com/mishanad07/SPeTMA.git  # Your GitHub repository URL
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    command: /home/mobsf/Mobile-Security-Framework-MobSF/scripts/qcluster.sh
+    volumes:
+      - $HOME/MobSF/mobsf_data:/home/mobsf/.MobSF
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD_FILE=/run/secrets/mobsfDB_password
+      - POSTGRES_DB=mobsf
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+    depends_on:
+      - postgres
+    networks:
+      - mobsf_network
+
 networks:
   mobsf_network:
+    driver: overlay
 
 secrets:
   mobsfDB_password:
