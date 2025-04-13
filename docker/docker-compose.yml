@@ -1,3 +1,5 @@
+version: '3.7'
+
 services:
 
   postgres:
@@ -38,9 +40,8 @@ services:
       - mobsf_network
 
   djangoq:
-    image: opensecurity/mobile-security-framework-mobsf:latest
     build:
-      context: ..
+      context: https://github.com/mishanad07/SPeTMA.git  # Your GitHub repository URL
       dockerfile: Dockerfile
     restart: unless-stopped
     command: /home/mobsf/Mobile-Security-Framework-MobSF/scripts/qcluster.sh
@@ -58,9 +59,8 @@ services:
       - mobsf_network
 
   mobsf:
-    image: opensecurity/mobile-security-framework-mobsf:latest
     build:
-      context: ..
+      context: https://github.com/mishanad07/SPeTMA.git  # Your GitHub repository URL
       dockerfile: Dockerfile
     restart: always
     tty: true
